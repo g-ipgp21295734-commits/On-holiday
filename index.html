@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday Grammar Challenge!</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        skyBlue: '#70d6ff',
+                        sunshineYellow: '#ffd670',
+                        coralRed: '#ff70a6',
+                        mintGreen: '#70e4b5',
+                        orangeWarm: '#ff9770',
+                        sandCream: '#fffdf5',
+                        chalkDark: '#2b2d42'
+                    },
+                    fontFamily: {
+                        sans: ['Fredoka', 'Comic Sans MS', 'Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'doodle': '4px 4px 0px 0px #2b2d42',
+                        'doodle-lg': '6px 6px 0px 0px #2b2d42',
+                        'doodle-sm': '2px 2px 0px 0px #2b2d42',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka', 'Comic Sans MS', sans-serif;
+            background-color: #e0f7fa;
+            background-image: radial-gradient(#b2ebf2 15%, transparent 16%), radial-gradient(#ffe082 15%, transparent 16%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            color: #2b2d42;
+            touch-action: manipulation;
+        }
+
+        .doodle-card {
+            background-color: #fffdf5;
+            border: 3.5px solid #2b2d42;
+            border-radius: 20px;
+            box-shadow: 5px 5px 0px 0px #2b2d42;
+        }
+
+        .doodle-btn {
+            border: 3px solid #2b2d42;
+            border-radius: 14px;
+            transition: all 0.15s ease;
+            box-shadow: 3px 3px 0px 0px #2b2d42;
+        }
+
+        .doodle-btn:hover:not(:disabled) {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px 0px #2b2d42;
+        }
+
+        .doodle-btn:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px 0px #2b2d42;
+        }
+
+        .doodle-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: 2px 2px 0px 0px #2b2d42;
+        }
+
+        /* Option Highlights */
+        .option-selected {
+            background-color: #ffd670 !important;
+            border-color: #2b2d42 !important;
+        }
+        .option-correct {
+            background-color: #70e4b5 !important;
+            border-color: #2b2d42 !important;
+        }
+        .option-wrong {
+            background-color: #ff70a6 !important;
+            color: white !important;
+            border-color: #2b2d42 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+    <!-- Header Navigation & Sound Controls -->
+    <header class="max-w-3xl w-full mx-auto flex justify-between items-center doodle-card p-3.5 mb-4">
+        <div class="flex items-center gap-2.5">
+            <span class="text-3xl">🏖️</span>
+            <div>
+                <h1 class="font-extrabold text-lg sm:text-2xl leading-none text-chalkDark">Holiday Grammar Challenge!</h1>
+                <p class="text-xs font-semibold text-gray-500 mt-0.5">Get Smart Plus 3 • Unit 9: Our World</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button id="sfx-btn" onclick="toggleSFX()" class="doodle-btn px-3 py-1.5 bg-mintGreen text-chalkDark font-bold text-xs flex items-center gap-1">
+                <span id="sfx-icon">🔊</span> SFX
+            </button>
+            <button id="music-btn" onclick="toggleMusic()" class="doodle-btn px-3 py-1.5 bg-skyBlue text-chalkDark font-bold text-xs flex items-center gap-1">
+                <span id="music-icon">🎵</span> Music
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game Workspace -->
+    <main class="max-w-3xl w-full mx-auto my-auto">
+
+        <!-- ================= 1. START SCREEN ================= -->
+        <section id="start-screen" class="doodle-card p-6 sm:p-10 text-center relative overflow-hidden">
+            <div class="inline-block bg-sunshineYellow text-chalkDark px-4 py-1.5 rounded-full border-2 border-chalkDark text-xs sm:text-sm font-extrabold mb-4 shadow-doodle-sm">
+                Malaysian Primary School English Practice
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-chalkDark mb-4 tracking-wide">
+                Katie's Holiday Quiz! ☀️
+            </h2>
+            
+            <p class="text-sm sm:text-base text-gray-700 max-w-lg mx-auto mb-6 leading-relaxed font-medium">
+                Answer 20 grammar questions about Katie's trip to practice positive past simple verbs (<em>went, bought, swam, ate</em>) and negative statements (<em>didn't go, didn't buy</em>).
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-lg mx-auto mb-8">
+                <div class="bg-amber-100 border-2 border-chalkDark rounded-xl p-2.5 text-center shadow-doodle-sm">
+                    <span class="text-2xl">🏛️</span>
+                    <p class="text-xs font-bold text-chalkDark mt-1">Museums</p>
+                </div>
+                <div class="bg-sky-100 border-2 border-chalkDark rounded-xl p-2.5 text-center shadow-doodle-sm">
+                    <span class="text-2xl">🏊‍♀️</span>
+                    <p class="text-xs font-bold text-chalkDark mt-1">Swimming</p>
+                </div>
+                <div class="bg-pink-100 border-2 border-chalkDark rounded-xl p-2.5 text-center shadow-doodle-sm">
+                    <span class="text-2xl">💌</span>
+                    <p class="text-xs font-bold text-chalkDark mt-1">Postcards</p>
+                </div>
+                <div class="bg-emerald-100 border-2 border-chalkDark rounded-xl p-2.5 text-center shadow-doodle-sm">
+                    <span class="text-2xl">✨</span>
+                    <p class="text-xs font-bold text-chalkDark mt-1">Stars</p>
+                </div>
+            </div>
+
+            <button onclick="startGame()" class="doodle-btn px-10 py-4 bg-sunshineYellow hover:bg-yellow-300 text-chalkDark font-extrabold text-2xl tracking-wider w-full sm:w-auto">
+                🚀 START QUIZ!
+            </button>
+        </section>
+
+        <!-- ================= 2. QUIZ SCREEN ================= -->
+        <section id="quiz-screen" class="hidden space-y-4">
+
+            <!-- Question Card Container -->
+            <div class="doodle-card p-5 sm:p-8">
+                
+                <!-- Status Header -->
+                <div class="flex justify-between items-center mb-3">
+                    <span id="question-number" class="font-extrabold text-sm sm:text-base text-chalkDark">Question 1 of 20</span>
+                    <span id="score-display" class="font-extrabold text-sm sm:text-base text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full border-2 border-chalkDark">Score: 0</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 border-2 border-chalkDark rounded-full h-3.5 overflow-hidden mb-6">
+                    <div id="progress-bar-fill" class="bg-mintGreen h-full w-0 transition-all duration-300"></div>
+                </div>
+
+                <!-- Question Prompt -->
+                <div class="mb-5">
+                    <h3 id="question-text" class="text-xl sm:text-2xl font-bold text-chalkDark leading-snug">
+                        Question text goes here...
+                    </h3>
+                    <p id="question-hint" class="text-xs sm:text-sm text-gray-500 font-semibold mt-1">
+                        Select the correct answer.
+                    </p>
+                </div>
+
+                <!-- SVG Visual Context (Dynamic) -->
+                <div id="illustration-container" class="hidden mb-5 bg-sky-50 border-2 border-chalkDark rounded-2xl p-3 flex justify-center items-center">
+                    <!-- Injected inline SVG -->
+                </div>
+
+                <!-- Dynamic Answers Layout -->
+                <div id="answers-container" class="space-y-3 mb-6">
+                    <!-- Options injected dynamically -->
+                </div>
+
+                <!-- Immediate Feedback Box -->
+                <div id="feedback-box" class="hidden mb-5 p-4 doodle-card transition-all">
+                    <div class="flex items-start gap-3">
+                        <span id="feedback-icon" class="text-3xl"></span>
+                        <div>
+                            <h4 id="feedback-title" class="font-extrabold text-base sm:text-lg">Title</h4>
+                            <p id="feedback-message" class="text-xs sm:text-sm font-medium mt-0.5 leading-relaxed">Explanation details.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Action Controls -->
+                <div class="flex justify-end gap-3 border-t-2 border-dashed border-gray-300 pt-5">
+                    <button id="check-btn" onclick="checkCurrentAnswer()" class="doodle-btn px-7 py-3 bg-mintGreen hover:bg-emerald-300 text-chalkDark font-extrabold text-base sm:text-lg w-full sm:w-auto">
+                        Check Answer 🎯
+                    </button>
+                    <button id="next-btn" onclick="nextQuestion()" class="hidden doodle-btn px-7 py-3 bg-skyBlue hover:bg-sky-300 text-chalkDark font-extrabold text-base sm:text-lg w-full sm:w-auto">
+                        Next Question ➡️
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= 3. RESULTS SCREEN ================= -->
+        <section id="results-screen" class="hidden doodle-card p-6 sm:p-10 text-center">
+            <div class="inline-block bg-sunshineYellow px-4 py-1.5 rounded-full border-2 border-chalkDark text-xs font-extrabold mb-3 shadow-doodle-sm">
+                Quiz Completed! 🏆
+            </div>
+            
+            <h2 id="result-title" class="text-3xl sm:text-4xl font-extrabold text-chalkDark mb-2">
+                Great Job, Grammar Star!
+            </h2>
+            <p id="result-message" class="text-sm sm:text-base text-gray-700 max-w-lg mx-auto mb-6 font-medium">
+                Awesome effort practicing your past tense English grammar!
+            </p>
+
+            <div id="star-rating" class="flex justify-center gap-2 text-4xl sm:text-5xl mb-6">
+                ⭐ ⭐ ⭐
+            </div>
+
+            <!-- Stats Card -->
+            <div class="max-w-md mx-auto bg-amber-50 border-2 border-chalkDark rounded-2xl p-5 mb-8 shadow-doodle-sm space-y-3 text-sm sm:text-base">
+                <div class="flex justify-between items-center border-b border-gray-300 pb-2.5">
+                    <span class="font-semibold text-gray-700">Final Score:</span>
+                    <span id="final-score" class="font-extrabold text-2xl text-chalkDark">0 / 200</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-gray-300 pb-2.5">
+                    <span class="font-semibold text-gray-700">1st Attempt Correct:</span>
+                    <span id="stat-first-try" class="font-bold text-emerald-700">0 / 20</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="font-semibold text-gray-700">Correct on Retry:</span>
+                    <span id="stat-retries" class="font-bold text-orange-600">0</span>
+                </div>
+            </div>
+
+            <button onclick="startGame()" class="doodle-btn px-8 py-4 bg-coralRed hover:bg-pink-400 text-white font-extrabold text-xl sm:text-2xl tracking-wider w-full sm:w-auto">
+                🔄 Play Again!
+            </button>
+        </section>
+
+    </main>
+
+    <footer class="max-w-3xl w-full mx-auto text-center mt-4 text-xs text-gray-600 font-semibold">
+        Malaysian Primary School English • Get Smart Plus 3 (Unit 9: Our World)
+    </footer>
+
+    <!-- ================= JAVASCRIPT & GAME LOGIC ================= -->
+    <script>
+        /* ==========================================================================
+           1. WEB AUDIO API SYNTHESIZER ENGINE (100% Offline & Native)
+           ========================================================================== */
+        let audioCtx = null;
+        let isMusicOn = false;
+        let isSFXOn = true;
+        let bgMusicInterval = null;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playClickSFX() {
+            if (!isSFXOn) return;
+            initAudioContext();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(550, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(850, audioCtx.currentTime + 0.04);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
+        }
+
+        function playSuccessSFX() {
+            if (!isSFXOn) return;
+            initAudioContext();
+            const now = audioCtx.currentTime;
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            notes.forEach((freq, idx) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.12, now + idx * 0.07);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.18);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + idx * 0.07);
+                osc.stop(now + idx * 0.07 + 0.2);
+            });
+        }
+
+        function playErrorSFX() {
+            if (!isSFXOn) return;
+            initAudioContext();
+            const now = audioCtx.currentTime;
+            const notes = [260, 190];
+            notes.forEach((freq, idx) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.1, now + idx * 0.12);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + idx * 0.12);
+                osc.stop(now + idx * 0.12 + 0.18);
+            });
+        }
+
+        function playFanfareSFX() {
+            if (!isSFXOn) return;
+            initAudioContext();
+            const now = audioCtx.currentTime;
+            const melody = [{ f: 523.25, d: 0.15 }, { f: 659.25, d: 0.15 }, { f: 783.99, d: 0.15 }, { f: 1046.50, d: 0.4 }];
+            let elapsed = 0;
+            melody.forEach(note => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = note.f;
+                gain.gain.setValueAtTime(0.15, now + elapsed);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + elapsed + note.d);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + elapsed);
+                osc.stop(now + elapsed + note.d);
+                elapsed += note.d;
+            });
+        }
+
+        function startBackgroundMusic() {
+            if (!isMusicOn) return;
+            initAudioContext();
+            stopBackgroundMusic();
+            const chordNotes = [
+                [261.63, 329.63, 392.00], // C major
+                [349.23, 440.00, 523.25], // F major
+                [392.00, 493.88, 587.33]  // G major
+            ];
+            let chordIdx = 0;
+            bgMusicInterval = setInterval(() => {
+                if (!isMusicOn || !audioCtx) return;
+                const now = audioCtx.currentTime;
+                chordNotes[chordIdx].forEach(freq => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.02, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.8);
+                });
+                chordIdx = (chordIdx + 1) % chordNotes.length;
+            }, 850);
+        }
+
+        function stopBackgroundMusic() {
+            if (bgMusicInterval) {
+                clearInterval(bgMusicInterval);
+                bgMusicInterval = null;
+            }
+        }
+
+        function toggleSFX() {
+            isSFXOn = !isSFXOn;
+            document.getElementById('sfx-icon').textContent = isSFXOn ? '🔊' : '🔇';
+            playClickSFX();
+        }
+
+        function toggleMusic() {
+            isMusicOn = !isMusicOn;
+            document.getElementById('music-icon').textContent = isMusicOn ? '🎵' : '🔇';
+            playClickSFX();
+            if (isMusicOn) startBackgroundMusic(); else stopBackgroundMusic();
+        }
+
+        /* ==========================================================================
+           2. VECTOR SVG ILLUSTRATION ASSETS
+           ========================================================================== */
+        const SVG_ASSETS = {
+            museum_open: `
+                <svg width="220" height="110" viewBox="0 0 240 120" fill="none" class="max-w-full h-auto">
+                    <rect width="240" height="120" rx="12" fill="#E0F2FE"/>
+                    <polygon points="120,15 40,45 200,45" fill="#FF9770" stroke="#2B2D42" stroke-width="3"/>
+                    <rect x="50" y="45" width="140" height="65" fill="#FFFDF9" stroke="#2B2D42" stroke-width="3"/>
+                    <rect x="70" y="45" width="14" height="65" fill="#FFD670" stroke="#2B2D42" stroke-width="2"/>
+                    <rect x="113" y="45" width="14" height="65" fill="#FFD670" stroke="#2B2D42" stroke-width="2"/>
+                    <rect x="156" y="45" width="14" height="65" fill="#FFD670" stroke="#2B2D42" stroke-width="2"/>
+                    <rect x="80" y="26" width="80" height="14" rx="4" fill="#70E4B5" stroke="#2B2D42" stroke-width="2"/>
+                    <text x="120" y="37" font-size="10" font-weight="extrabold" fill="#2B2D42" text-anchor="middle">MUSEUM</text>
+                </svg>`,
+
+            museum_closed: `
+                <svg width="220" height="110" viewBox="0 0 240 120" fill="none" class="max-w-full h-auto">
+                    <rect width="240" height="120" rx="12" fill="#FEE2E2"/>
+                    <polygon points="120,15 40,45 200,45" fill="#FF70A6" stroke="#2B2D42" stroke-width="3"/>
+                    <rect x="50" y="45" width="140" height="65" fill="#FFFDF9" stroke="#2B2D42" stroke-width="3"/>
+                    <rect x="85" y="58" width="70" height="32" rx="6" fill="#FF70A6" stroke="#2B2D42" stroke-width="3"/>
+                    <text x="120" y="79" font-size="13" font-weight="extrabold" fill="#FFFDF9" text-anchor="middle">CLOSED</text>
+                </svg>`,
+
+            swimming: `
+                <svg width="220" height="110" viewBox="0 0 240 120" fill="none" class="max-w-full h-auto">
+                    <rect width="240" height="120" rx="12" fill="#70D6FF"/>
+                    <path d="M0 75 Q 30 65 60 75 T 120 75 T 180 75 T 240 75 L 240 120 L 0 120 Z" fill="#3B82F6" stroke="#2B2D42" stroke-width="2"/>
+                    <circle cx="120" cy="58" r="14" fill="#FFD670" stroke="#2B2D42" stroke-width="3"/>
+                    <text x="120" y="108" font-size="11" font-weight="bold" fill="#FFFDF9" text-anchor="middle">Swam in the Sea 🌊</text>
+                </svg>`,
+
+            stars: `
+                <svg width="220" height="110" viewBox="0 0 240 120" fill="none" class="max-w-full h-auto">
+                    <rect width="240" height="120" rx="12" fill="#1E1B4B"/>
+                    <circle cx="195" cy="32" r="14" fill="#FFD670"/>
+                    <polygon points="40,22 43,29 50,29 45,34 47,41 40,37 33,41 35,34 30,29 37,29" fill="#FFD670"/>
+                    <polygon points="110,18 112,23 117,23 113,27 115,32 110,29 105,32 107,27 103,23 108,23" fill="#FFD670"/>
+                    <text x="120" y="106" font-size="11" font-weight="bold" fill="#FFFDF9" text-anchor="middle">Looked at the Stars ⭐</text>
+                </svg>`,
+
+            postcards: `
+                <svg width="220" height="110" viewBox="0 0 240 120" fill="none" class="max-w-full h-auto">
+                    <rect width="240" height="120" rx="12" fill="#FEF08A"/>
+                    <rect x="20" y="65" width="200" height="42" rx="6" fill="#FF9770" stroke="#2B2D42" stroke-width="3"/>
+                    <rect x="50" y="25" width="32" height="42" rx="3" fill="#70D6FF" stroke="#2B2D42" stroke-width="2"/>
+                    <rect x="95" y="25" width="32" height="42" rx="3" fill="#FF70A6" stroke="#2B2D42" stroke-width="2"/>
+                    <rect x="140" y="25" width="32" height="42" rx="3" fill="#70E4B5" stroke="#2B2D42" stroke-width="2"/>
+                </svg>`
+        };
+
+        /* ==========================================================================
+           3. QUESTION BANK (35 Distinct Questions)
+           ========================================================================== */
+        const QUESTION_BANK = [
+            // Format A: MCQ Past Simple Positive
+            { id: 1, format: 'A', question: "Yesterday, Katie _____ to the museum.", hint: "Choose the correct past simple verb.", options: ["go", "went", "going", "goes"], answer: "went", rule: "Past simple of 'go' is 'went'." },
+            { id: 2, format: 'A', question: "Katie _____ postcards for her friends on vacation.", hint: "Choose past form of 'buy'.", options: ["bought", "buyed", "buys", "buying"], answer: "bought", rule: "Past simple of 'buy' is 'bought'." },
+            { id: 3, format: 'A', question: "She _____ a pretty shell on the beach.", hint: "Choose past form of 'find'.", options: ["finded", "found", "finds", "finding"], answer: "found", rule: "Past simple of 'find' is 'found'." },
+            { id: 4, format: 'A', question: "Katie _____ in the warm sea yesterday afternoon.", hint: "Choose past simple of 'swim'.", options: ["swam", "swimmed", "swims", "swimming"], answer: "swam", rule: "Past simple of 'swim' is 'swam'." },
+            { id: 5, format: 'A', question: "They _____ lunch at a nice beach restaurant.", hint: "Past simple of 'eat'.", options: ["ate", "eated", "eat", "eating"], answer: "ate", rule: "Past simple of 'eat' is 'ate'." },
+
+            // Format B: Complete Sentence (Negative didn't + root)
+            { id: 6, format: 'B', question: "Katie didn't _____ pictures at the museum.", hint: "Rule: After didn't, use ROOT verb!", options: ["took", "take", "taken", "taking"], answer: "take", rule: "Subject + didn't + ROOT verb (take, not took)." },
+            { id: 7, format: 'B', question: "She didn't _____ in the sea yesterday.", hint: "Choose root verb after didn't.", options: ["swam", "swim", "swimming", "swims"], answer: "swim", rule: "Subject + didn't + ROOT verb (swim, not swam)." },
+            { id: 8, format: 'B', question: "Katie didn't _____ lunch at home.", hint: "Which root verb follows didn't?", options: ["ate", "eat", "eaten", "eats"], answer: "eat", rule: "Subject + didn't + ROOT verb (eat, not ate)." },
+            { id: 9, format: 'B', question: "They didn't _____ at the stars last night.", hint: "Pick the root verb.", options: ["looked", "look", "looking", "looks"], answer: "look", rule: "Subject + didn't + ROOT verb (look, not looked)." },
+            { id: 10, format: 'B', question: "Katie didn't _____ to the souvenir shop.", hint: "Use root verb after didn't.", options: ["went", "go", "gone", "going"], answer: "go", rule: "Subject + didn't + ROOT verb (go, not went)." },
+
+            // Format C: Find Grammar Mistake
+            { id: 11, format: 'C', question: "Find the corrected sentence for: 'She didn't bought postcards.'", hint: "Fix the double past tense error.", options: ["She didn't buy postcards.", "She didn't bought postcards.", "She doesn't bought postcards.", "She didn't buying postcards."], answer: "She didn't buy postcards.", rule: "Never say 'didn't bought'! Use 'didn't buy'." },
+            { id: 12, format: 'C', question: "Find the corrected sentence for: 'Katie didn't went to the beach.'", hint: "'didn't went' is incorrect!", options: ["Katie didn't go to the beach.", "Katie didn't went to the beach.", "Katie didn't gone to the beach.", "Katie doesn't went to the beach."], answer: "Katie didn't go to the beach.", rule: "Never say 'didn't went'! Use 'didn't go'." },
+            { id: 13, format: 'C', question: "Find the corrected sentence for: 'He didn't ate lunch.'", hint: "Fix the verb after didn't.", options: ["He didn't eat lunch.", "He didn't ate lunch.", "He not ate lunch.", "He didn't eating lunch."], answer: "He didn't eat lunch.", rule: "Never say 'didn't ate'! Use 'didn't eat'." },
+
+            // Format D: Choose Correct Sentence
+            { id: 14, format: 'D', question: "Which sentence is 100% grammatically correct?", hint: "Check positive vs negative past rules.", options: ["Katie looked at the stars at night.", "Katie look at the stars at night.", "Katie didn't looked at the stars.", "Katie didn't saw the stars."], answer: "Katie looked at the stars at night.", rule: "Positive uses 'looked'. Negative uses 'didn't look'." },
+            { id: 15, format: 'D', question: "Which sentence is grammatically correct?", hint: "Watch out for root verb rules!", options: ["Katie didn't find a postcard.", "Katie didn't found a postcard.", "Katie didn't finding a postcard.", "Katie not found a postcard."], answer: "Katie didn't find a postcard.", rule: "'didn't find' is correct because find is the root verb." },
+
+            // Format E: Positive or Negative?
+            { id: 16, format: 'E', question: "Look at: 'Katie didn't swim in the sea.' Did Katie swim?", hint: "Does 'didn't swim' mean YES or NO?", options: ["No, she didn't swim.", "Yes, she swam."], answer: "No, she didn't swim.", rule: "'didn't swim' means she did NOT swim." },
+            { id: 17, format: 'E', question: "Look at: 'Katie ate lunch at a restaurant.' Did Katie eat lunch?", hint: "Is this positive or negative?", options: ["Yes, she ate lunch.", "No, she didn't eat lunch."], answer: "Yes, she ate lunch.", rule: "'ate' is positive past tense." },
+
+            // Format F: Match Verbs
+            { id: 18, format: 'F', question: "Match Present Root Verbs to Past Simple forms:", pairs: [{ root: "go", correct: "went" }, { root: "buy", correct: "bought" }, { root: "find", correct: "found" }], allOptions: ["went", "bought", "found", "swam"], rule: "go -> went | buy -> bought | find -> found" },
+            { id: 19, format: 'F', question: "Match holiday verbs to past forms:", pairs: [{ root: "take", correct: "took" }, { root: "eat", correct: "ate" }, { root: "swim", correct: "swam" }], allOptions: ["took", "ate", "swam", "looked"], rule: "take -> took | eat -> ate | swim -> swam" },
+
+            // Format G: SVG Picture Context
+            { id: 20, format: 'G', svgKey: 'museum_closed', question: "Look at the picture. The museum was CLOSED. Complete:", hint: "She couldn't go inside.", options: ["Katie didn't go into the museum.", "Katie went into the museum.", "Katie didn't went into the museum.", "Katie goes into the museum."], answer: "Katie didn't go into the museum.", rule: "The museum was closed, so she didn't go inside." },
+            { id: 21, format: 'G', svgKey: 'swimming', question: "Look at the picture. What did Katie do yesterday?", hint: "Observe the ocean water.", options: ["Katie swam in the sea.", "Katie didn't swim in the sea.", "Katie swimmed in the sea.", "Katie swim in the sea."], answer: "Katie swam in the sea.", rule: "Past tense of swim is 'swam'." },
+            { id: 22, format: 'G', svgKey: 'stars', question: "Look at the night sky picture. Complete sentence:", hint: "Check the stars.", options: ["She looked at the stars.", "She didn't look at the stars.", "She looking at stars.", "She look at stars."], answer: "She looked at the stars.", rule: "Past simple of look is 'looked'." },
+            { id: 23, format: 'G', svgKey: 'postcards', question: "Look at the shop in the picture. Complete:", hint: "She is at the postcard stall.", options: ["Katie bought postcards.", "Katie didn't buy postcards.", "Katie buyed postcards.", "Katie buys postcards."], answer: "Katie bought postcards.", rule: "Past simple of buy is 'bought'." },
+
+            // Format H: Complete Mini Diary
+            { id: 24, format: 'H', textTemplate: "Yesterday was fun! Katie {1} to the beach. She {2} a pretty shell, but she didn't {3} pictures.", blanks: [{ id: 1, options: ["went", "go", "goes"], correct: "went" }, { id: 2, options: ["found", "finded", "find"], correct: "found" }, { id: 3, options: ["take", "took", "taked"], correct: "take" }], rule: "1: went | 2: found | 3: take (root after didn't)" },
+            { id: 25, format: 'H', textTemplate: "On Monday, Katie didn't {1} in the sea. She {2} postcards and {3} at the stars.", blanks: [{ id: 1, options: ["swim", "swam", "swimming"], correct: "swim" }, { id: 2, options: ["bought", "buyed", "buy"], correct: "bought" }, { id: 3, options: ["looked", "look", "looking"], correct: "looked" }], rule: "1: swim (root after didn't) | 2: bought | 3: looked" },
+
+            // Format I: True or False
+            { id: 26, format: 'I', question: "Is this sentence grammatically correct?\n'Katie didn't went to the museum.'", hint: "Remember: didn't + root verb!", options: ["False (Incorrect Grammar)", "True (Correct Grammar)"], answer: "False (Incorrect Grammar)", rule: "FALSE! Correct: 'Katie didn't go to the museum.'" },
+            { id: 27, format: 'I', question: "Is this sentence grammatically correct?\n'She bought postcards yesterday.'", hint: "Is 'bought' correct?", options: ["True (Correct Grammar)", "False (Incorrect Grammar)"], answer: "True (Correct Grammar)", rule: "TRUE! 'bought' is correct past simple." },
+            { id: 28, format: 'I', question: "Is this sentence grammatically correct?\n'Katie didn't take any pictures.'", hint: "Check 'didn't take'.", options: ["True (Correct Grammar)", "False (Incorrect Grammar)"], answer: "True (Correct Grammar)", rule: "TRUE! Uses root verb 'take' after didn't." },
+            { id: 29, format: 'I', question: "Is this sentence grammatically correct?\n'She didn't found her shell.'", hint: "Check 'didn't found'.", options: ["False (Incorrect Grammar)", "True (Correct Grammar)"], answer: "False (Incorrect Grammar)", rule: "FALSE! Correct: 'She didn't find her shell.'" },
+
+            // Format J: Select Correct Verb Form (Brackets)
+            { id: 30, format: 'J', question: "Katie _____ (buy) postcards yesterday.", hint: "Change (buy) to past simple.", options: ["bought", "buyed", "buys", "buy"], answer: "bought", rule: "Past simple of (buy) is bought." },
+            { id: 31, format: 'J', question: "Katie didn't _____ (go) to the museum on Tuesday.", hint: "Form of (go) after didn't?", options: ["go", "went", "gone", "going"], answer: "go", rule: "After didn't, keep root form: (go)." },
+            { id: 32, format: 'J', question: "She _____ (find) a beautiful shell on the sand.", hint: "Past simple of (find).", options: ["found", "finded", "finds", "finding"], answer: "found", rule: "Past simple of (find) is found." },
+            { id: 33, format: 'J', question: "They didn't _____ (eat) lunch at the beach.", hint: "Form of (eat) after didn't?", options: ["eat", "ate", "eaten", "eating"], answer: "eat", rule: "After didn't, use root verb: (eat)." },
+            { id: 34, format: 'J', question: "Katie _____ (swim) in the sea with her brother.", hint: "Past simple of (swim).", options: ["swam", "swimmed", "swimming", "swims"], answer: "swam", rule: "Past simple of (swim) is swam." },
+            { id: 35, format: 'J', question: "We didn't _____ (look) at the stars last night.", hint: "Form of (look) after didn't?", options: ["look", "looked", "looking", "looks"], answer: "look", rule: "After didn't, use root verb: (look)." }
+        ];
+
+        /* ==========================================================================
+           4. GAME STATE ENGINE
+           ========================================================================== */
+        let activeQuestions = [];
+        let currentQIndex = 0;
+        let score = 0;
+        let firstTryCorrectCount = 0;
+        let retriesCorrectCount = 0;
+
+        let isRetryAttempt = false;
+        let isCurrentChecked = false;
+        let selectedOption = null;
+
+        function startGame() {
+            playClickSFX();
+            const shuffled = [...QUESTION_BANK].sort(() => 0.5 - Math.random());
+            activeQuestions = shuffled.slice(0, 20);
+
+            currentQIndex = 0;
+            score = 0;
+            firstTryCorrectCount = 0;
+            retriesCorrectCount = 0;
+
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = activeQuestions[currentQIndex];
+            isRetryAttempt = false;
+            isCurrentChecked = false;
+            selectedOption = null;
+
+            document.getElementById('question-number').textContent = `Question ${currentQIndex + 1} of 20`;
+            document.getElementById('score-display').textContent = `Score: ${score}`;
+            document.getElementById('progress-bar-fill').style.width = `${((currentQIndex) / 20) * 100}%`;
+
+            document.getElementById('question-text').textContent = q.question;
+            document.getElementById('question-hint').textContent = q.hint || "Select the correct answer.";
+
+            // Reset SVG illustration area
+            const illuBox = document.getElementById('illustration-container');
+            if (q.svgKey && SVG_ASSETS[q.svgKey]) {
+                illuBox.innerHTML = SVG_ASSETS[q.svgKey];
+                illuBox.classList.remove('hidden');
+            } else {
+                illuBox.classList.add('hidden');
+                illuBox.innerHTML = '';
+            }
+
+            // Reset Feedback & Buttons
+            document.getElementById('feedback-box').classList.add('hidden');
+            document.getElementById('check-btn').classList.remove('hidden');
+            document.getElementById('check-btn').disabled = false;
+            document.getElementById('next-btn').classList.add('hidden');
+
+            const container = document.getElementById('answers-container');
+            container.innerHTML = '';
+
+            if (q.format === 'F') {
+                q.pairs.forEach((pair, idx) => {
+                    const row = document.createElement('div');
+                    row.className = 'flex flex-col sm:flex-row items-center justify-between gap-2 p-3 bg-white doodle-card shadow-doodle-sm';
+                    row.innerHTML = `
+                        <span class="font-bold text-base text-chalkDark">Root Verb: <span class="text-coralRed font-extrabold">${pair.root}</span> ➡️</span>
+                        <select id="match-select-${idx}" class="doodle-btn p-2 bg-sky-50 text-chalkDark font-bold text-sm w-full sm:w-48">
+                            <option value="">-- Select Past Form --</option>
+                            ${q.allOptions.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                        </select>`;
+                    container.appendChild(row);
+                });
+
+            } else if (q.format === 'H') {
+                const diaryBox = document.createElement('div');
+                diaryBox.className = 'p-4 bg-amber-50 doodle-card text-base sm:text-lg leading-relaxed font-semibold text-chalkDark mb-3';
+                let formattedText = q.textTemplate;
+                q.blanks.forEach(b => {
+                    const selectHTML = `
+                        <select id="blank-select-${b.id}" class="doodle-btn px-2 py-1 bg-white text-coralRed font-bold border-2 border-chalkDark mx-1">
+                            <option value="">(blank ${b.id})</option>
+                            ${b.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                        </select>`;
+                    formattedText = formattedText.replace(`{${b.id}}`, selectHTML);
+                });
+                diaryBox.innerHTML = formattedText;
+                container.appendChild(diaryBox);
+
+            } else {
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3';
+                q.options.forEach((optText) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'doodle-btn text-left p-3.5 bg-white hover:bg-yellow-50 text-chalkDark font-bold text-base transition-all flex items-center justify-between';
+                    btn.innerHTML = `<span>${optText}</span> <span class="opt-indicator text-lg">⚪</span>`;
+                    btn.onclick = () => selectStandardOption(btn, optText);
+                    grid.appendChild(btn);
+                });
+                container.appendChild(grid);
+            }
+        }
+
+        function selectStandardOption(btnElement, val) {
+            if (isCurrentChecked) return;
+            playClickSFX();
+            selectedOption = val;
+            const container = document.getElementById('answers-container');
+            container.querySelectorAll('button').forEach(b => {
+                b.classList.remove('option-selected');
+                const ind = b.querySelector('.opt-indicator');
+                if (ind) ind.textContent = '⚪';
+            });
+            btnElement.classList.add('option-selected');
+            const indicator = btnElement.querySelector('.opt-indicator');
+            if (indicator) indicator.textContent = '🔘';
+        }
+
+        /* ==========================================================================
+           5. ANSWER EVALUATION & SCORING LOGIC
+           ========================================================================== */
+        function checkCurrentAnswer() {
+            if (isCurrentChecked) return;
+            const q = activeQuestions[currentQIndex];
+            let isCorrect = false;
+
+            if (q.format === 'F') {
+                let allPairsCorrect = true;
+                q.pairs.forEach((pair, idx) => {
+                    const sel = document.getElementById(`match-select-${idx}`);
+                    if (!sel || sel.value !== pair.correct) allPairsCorrect = false;
+                });
+                isCorrect = allPairsCorrect;
+            } else if (q.format === 'H') {
+                let allBlanksCorrect = true;
+                q.blanks.forEach(b => {
+                    const sel = document.getElementById(`blank-select-${b.id}`);
+                    if (!sel || sel.value !== b.correct) allBlanksCorrect = false;
+                });
+                isCorrect = allBlanksCorrect;
+            } else {
+                if (!selectedOption) {
+                    alert("Please select an answer first!");
+                    return;
+                }
+                isCorrect = (selectedOption === q.answer);
+            }
+
+            isCurrentChecked = true;
+            const feedbackBox = document.getElementById('feedback-box');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackMsg = document.getElementById('feedback-message');
+            feedbackBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                playSuccessSFX();
+                if (!isRetryAttempt) {
+                    score += 10;
+                    firstTryCorrectCount++;
+                } else {
+                    score += 5;
+                    retriesCorrectCount++;
+                }
+                document.getElementById('score-display').textContent = `Score: ${score}`;
+
+                feedbackBox.className = "mb-5 p-4 doodle-card bg-emerald-100 border-emerald-600 text-emerald-950";
+                feedbackIcon.textContent = "🎉";
+                feedbackTitle.textContent = isRetryAttempt ? "Great Job on Retry! (+5 pts)" : "Correct! Excellent! (+10 pts)";
+                feedbackMsg.textContent = q.rule || "Grammar rule applied correctly!";
+
+                highlightMCQAnswers(q.answer);
+                document.getElementById('check-btn').classList.add('hidden');
+                document.getElementById('next-btn').classList.remove('hidden');
+
+            } else {
+                playErrorSFX();
+                feedbackBox.className = "mb-5 p-4 doodle-card bg-pink-100 border-pink-600 text-pink-950";
+                feedbackIcon.textContent = "💡";
+
+                if (!isRetryAttempt) {
+                    feedbackTitle.textContent = "Not quite! Try once more!";
+                    feedbackMsg.innerHTML = `<strong>Grammar Rule:</strong> ${q.rule}<br><em>Try again now for +5 points!</em>`;
+                    isRetryAttempt = true;
+                    isCurrentChecked = false;
+
+                    if (selectedOption) highlightMCQAnswers(null, selectedOption);
+                } else {
+                    feedbackTitle.textContent = "Good try!";
+                    feedbackMsg.innerHTML = `<strong>Correct Answer:</strong> ${getCorrectAnswerSummary(q)}<br><em>Rule: ${q.rule}</em>`;
+
+                    highlightMCQAnswers(q.answer, selectedOption);
+                    document.getElementById('check-btn').classList.add('hidden');
+                    document.getElementById('next-btn').classList.remove('hidden');
+                }
+            }
+        }
+
+        function highlightMCQAnswers(correctAns, wrongAns = null) {
+            const container = document.getElementById('answers-container');
+            container.querySelectorAll('button').forEach(btn => {
+                const text = btn.querySelector('span').textContent;
+                if (correctAns && text === correctAns) {
+                    btn.classList.remove('option-selected');
+                    btn.classList.add('option-correct');
+                    btn.querySelector('.opt-indicator').textContent = '✅';
+                } else if (wrongAns && text === wrongAns) {
+                    btn.classList.remove('option-selected');
+                    btn.classList.add('option-wrong');
+                    btn.querySelector('.opt-indicator').textContent = '❌';
+                }
+            });
+        }
+
+        function getCorrectAnswerSummary(q) {
+            if (q.format === 'F') return q.pairs.map(p => `${p.root} → ${p.correct}`).join(', ');
+            if (q.format === 'H') return q.blanks.map(b => `Blank ${b.id}: ${b.correct}`).join(' | ');
+            return q.answer;
+        }
+
+        function nextQuestion() {
+            playClickSFX();
+            currentQIndex++;
+            if (currentQIndex < 20) {
+                renderQuestion();
+            } else {
+                showResultsScreen();
+            }
+        }
+
+        /* ==========================================================================
+           6. SUMMARY RESULTS SCREEN
+           ========================================================================== */
+        function showResultsScreen() {
+            playFanfareSFX();
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+
+            document.getElementById('final-score').textContent = `${score} / 200`;
+            document.getElementById('stat-first-try').textContent = `${firstTryCorrectCount} / 20`;
+            document.getElementById('stat-retries').textContent = `${retriesCorrectCount}`;
+
+            const title = document.getElementById('result-title');
+            const msg = document.getElementById('result-message');
+            const stars = document.getElementById('star-rating');
+
+            if (score >= 170) {
+                title.textContent = "Grammar Champion! 🏆";
+                msg.textContent = "Outstanding! You have mastered Unit 9 past simple grammar!";
+                stars.textContent = "⭐ ⭐ ⭐ ⭐ ⭐";
+            } else if (score >= 120) {
+                title.textContent = "Great Job! ✨";
+                msg.textContent = "Well done! Your past tense English skills are super strong!";
+                stars.textContent = "⭐ ⭐ ⭐ ⭐";
+            } else if (score >= 80) {
+                title.textContent = "Good Effort! 🌊";
+                msg.textContent = "Nice try! Keep practicing positive and negative past simple verbs!";
+                stars.textContent = "⭐ ⭐ ⭐";
+            } else {
+                title.textContent = "Keep Practicing! 💪";
+                msg.textContent = "Remember the rule: Subject + didn't + ROOT verb (e.g. didn't go)! Try again!";
+                stars.textContent = "⭐ ⭐";
+            }
+        }
+    </script>
+</body>
+</html>
